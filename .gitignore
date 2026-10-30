@@ -1,0 +1,12 @@
+# secrets en certificaten
+.env
+acme.json
+*.pem
+*.key
+
+# lokale rommel
+*.orig
+*_BACKUP_*
+*_LOCAL_*
+*_REMOTE_*
+*_BASE_*
