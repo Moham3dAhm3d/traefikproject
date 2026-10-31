@@ -6,7 +6,7 @@ services:
       - "8080:8080"
     volumes:
       - ./traefik.yaml:/etc/traefik/traefik.yaml
-      - ./routes.yaml:/etc/traefik/routes.yaml
+      - ./config:/etc/traefik/config
     networks:
       - buiten
   

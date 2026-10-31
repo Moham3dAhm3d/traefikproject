@@ -4,7 +4,7 @@ entryPoints:
 
 providers:
   file:
-    filename: /etc/traefik/routes.yaml
+    filename: /etc/traefik/config
     watch: true
 
 api:
