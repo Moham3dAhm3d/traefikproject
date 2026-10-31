@@ -20,5 +20,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.website.rule=Host(`site.localhost`) && PathPrefix(`/info`)"
-      - "traefik.http.routers.website.middlewares=knip-info"
+      - "traefik.http.routers.website.middlewares=knip-info,guardian"
       - "traefik.http.middlewares.knip-info.stripprefix.prefixes=/info"
+      - "traefik.http.middlewares.guardian.basicauth.users=azrael:$$apr1$$YewX2mhW$$gib5cNYtY6wzDMjFe9XQQ1"
