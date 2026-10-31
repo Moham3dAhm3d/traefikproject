@@ -10,18 +10,41 @@ services:
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - buiten
+  
   whoami:
     image: traefik/whoami
     deploy:
       replicas: 3
+    networks:
+      - buiten
     labels:
       - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
       - "traefik.enable=true"
+  
   website:
     image: httpd:2.4
+    networks:
+     - binnen
+     - buiten
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=traefikproject_buiten"
       - "traefik.http.routers.website.rule=Host(`site.localhost`) && PathPrefix(`/info`)"
       - "traefik.http.routers.website.middlewares=knip-info,guardian"
       - "traefik.http.middlewares.knip-info.stripprefix.prefixes=/info"
       - "traefik.http.middlewares.guardian.basicauth.users=azrael:$$apr1$$YewX2mhW$$gib5cNYtY6wzDMjFe9XQQ1"
+  
+  database:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: Uiop
+      POSTGRES_DB: randomdb
+    networks:
+      - binnen
+  
+
+networks:
+  buiten:
+  binnen:
