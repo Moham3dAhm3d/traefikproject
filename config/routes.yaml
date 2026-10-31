@@ -2,10 +2,16 @@ http:
   routers:
     whoami:
       rule: "Host(`whoami.localhost`)"
+      entryPoints:
+        - websecure
+      tls: {}
       service: whoami
 
     website:
-      rule: "Host(`site.localhost`) && PathPrefix(`/info`)"
+      rule: "Host(`site.localhost`) && PathPrefix(`/uitleg`)"
+      entryPoints:
+        - websecure
+      tls: {}
       middlewares:
         - knip-info
         - guardian
@@ -15,7 +21,7 @@ http:
     knip-info:
       stripPrefix:
         prefixes:
-          - "/info"
+          - "/uitleg"
 
     guardian:
       basicAuth:
