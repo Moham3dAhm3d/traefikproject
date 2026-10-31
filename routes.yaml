@@ -1,0 +1,38 @@
+http:
+  routers:
+    whoami:
+      rule: "Host(`whoami.localhost`)"
+      service: whoami
+
+    website:
+      rule: "Host(`site.localhost`) && PathPrefix(`/info`)"
+      middlewares:
+        - knip-info
+        - guardian
+      service: website
+
+  middlewares:
+    knip-info:
+      stripPrefix:
+        prefixes:
+          - "/info"
+
+    guardian:
+      basicAuth:
+        users:
+          - "azrael:$apr1$YewX2mhW$gib5cNYtY6wzDMjFe9XQQ1"
+
+  services:
+    whoami:
+      loadBalancer:
+        servers:
+          - url: "http://traefikproject-whoami-1:80"
+          - url: "http://traefikproject-whoami-2:80"
+          - url: "http://traefikproject-whoami-3:80"
+
+    website:
+      loadBalancer:
+        servers:
+          - url: "http://traefikproject-website-1:80"
+          - url: "http://traefikproject-website-2:80"
+          - url: "http://traefikproject-website-3:80"
