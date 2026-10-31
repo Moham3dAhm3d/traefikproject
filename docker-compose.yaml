@@ -4,6 +4,7 @@ services:
     command:
       - "--api.insecure=true"
       - "--providers.docker"
+      - "--providers.docker.exposedByDefault=false"
     ports:
       - "80:80"
       - "8080:8080"
@@ -13,4 +14,11 @@ services:
     image: traefik/whoami
     labels:
       - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
-      
+      - "traefik.enable=true"
+  website:
+    image: httpd:2.4
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.website.rule=Host(`site.localhost`) && PathPrefix(`/info`)"
+      - "traefik.http.routers.website.middlewares=knip-info"
+      - "traefik.http.middlewares.knip-info.stripprefix.prefixes=/info"
